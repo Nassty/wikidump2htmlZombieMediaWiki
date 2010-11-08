@@ -33,9 +33,7 @@ class SimpleTemplate(object):
         Parse my content and give me my well formated HTML biatch
         """
 
-        html = self.html 
-        html.replace("{{CONTENT}}", content)
-        return html
+        return self.html.replace("{{CONTENT}}", content)
 
 class HTTPSender(object):
     """
