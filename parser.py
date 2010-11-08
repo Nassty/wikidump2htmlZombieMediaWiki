@@ -71,7 +71,7 @@ def main():
     '''main function when called from the command line'''
     options, args = parse_options()
 
-    Parser(open(options.xml), option.outputdir)
+    Parser(open(options.xml), options.outputdir)
 
 def parse_options():
     '''parse and return command line options'''
