@@ -1,4 +1,5 @@
 import os
+import sys
 import glob
 import urllib
 import httplib
@@ -96,7 +97,7 @@ class HTTPSender(object):
             result_file.write(self.template.parse(response.read(),
                               title))
             result_file.close()
-
+            sys.stdout.write(".")
             return True
         else:
             raise SenderException(response.reason)
@@ -117,6 +118,9 @@ def main():
 
     HTTPSender(options.host, options.uri, options.path,
                options.port).run()
+    print
+    print "-"*20
+    print "DONE!"
 
 def parse_options():
     """parse and return command line options"""

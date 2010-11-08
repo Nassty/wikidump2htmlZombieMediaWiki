@@ -42,10 +42,11 @@ class Parser(object):
         if name == "page":
             self.in_page = False
             id = u"".join(self.id).encode("utf-8").strip()
-            title = u"".join(self.title).encode("utf-8").strip()
+            title = u"".join(self.title).strip().replace(" ",
+                    "-").replace(":", "-").replace("/", "-")
             content = u"".join(self.text).encode("utf-8").strip()
-
-            with open("out/" + title + ".xml", "w") as fh:
+            sys.stdout.write(".")
+            with open(u"out/" + title + u".xml", "w") as fh:
                 fh.write(content)
 
         elif name == "revision":
@@ -72,6 +73,7 @@ def main():
     options, args = parse_options()
 
     Parser(open(options.xml), options.outputdir)
+    print "Done!"
 
 def parse_options():
     '''parse and return command line options'''

@@ -48,3 +48,7 @@ test it::
 
         curl -X POST http://localhost/mediawiki/dumper.php --data-binary '{{asd}}'
 
+run it::
+
+        python2.6 parser.py -x eswiki.xml -o out 
+        python2.6 sender.py -H localhost -o out 
