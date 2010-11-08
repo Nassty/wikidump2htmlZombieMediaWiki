@@ -13,5 +13,5 @@ include("includes/parser/Parser.php");
 $option = new ParserOptions();
 $title = new Title();
 $parser = new Parser();
-$text = ($parser->parse($_REQUEST["text"], $title, $option));
+$text = ($parser->parse(file_get_contents('php://input'), $title, $option));
 print $text->mText;

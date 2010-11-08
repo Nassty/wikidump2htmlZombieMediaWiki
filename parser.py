@@ -37,10 +37,13 @@ class Parser(object):
         '''End xml element handler'''
         if name == "page":
             self.in_page = False
-            print "id", u"".join(self.id).encode("utf-8")
-            print "title", u"".join(self.title).encode("utf-8")
-            print u"".join(self.text)[:20].encode("utf-8")
-            print "-" * 79
+            id = u"".join(self.id).encode("utf-8").strip()
+            title = u"".join(self.title).encode("utf-8").strip()
+            content = u"".join(self.text).encode("utf-8").strip()
+
+            with open("out/" + title + ".xml", "w") as fh:
+                fh.write(content)
+
         elif name == "revision":
             self.in_revision = False
 
