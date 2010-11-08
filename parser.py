@@ -1,11 +1,15 @@
 import sys
 import xml.parsers.expat
 
+from optparse import OptionParser
+
 class Parser(object):
-    def __init__(self, path):
+    def __init__(self, path, output_path):
         self.parser = xml.parsers.expat.ParserCreate()
         self.parser.buffer_text = True
         self.parser.returns_unicode = True
+
+        self.output_path = output_path
 
         self.in_page = False
         self.in_revision = False
@@ -59,7 +63,26 @@ class Parser(object):
         elif self.current_tag == "id":
             self.id.append(data)
 
+    def build_output_path(self, title):
+        '''return the complete path using the base output path'''
+        return os.path.join(self.output_path, title + ".xml")
+
+def main():
+    '''main function when called from the command line'''
+    options, args = parse_options()
+
+    Parser(open(options.xml), option.outputdir)
+
+def parse_options():
+    '''parse and return command line options'''
+    parser = OptionParser()
+    parser.add_option("-x", "--xml", dest="xml", default="eswiki.xml",
+                      help="read xml input FILE", metavar="FILE")
+    parser.add_option("-o", "--outputdir", dest="outputdir", default="out",
+                      help="write files to DIR", metavar="DIR")
+
+    return parser.parse_args()
 
 if __name__ == '__main__':
-    Parser(open(sys.argv[1]))
+    main()
 
