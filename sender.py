@@ -28,12 +28,13 @@ class SimpleTemplate(object):
         self.html = current_file.read() 
         current_file.close()
 
-    def parse(self, content):
+    def parse(self, content, title):
         """
         Parse my content and give me my well formated HTML biatch
         """
 
-        return self.html.replace("{{CONTENT}}", content)
+        return self.html.replace("{{CONTENT}}",
+                content).replace("{{TITLE}}", title)
 
 class HTTPSender(object):
     """
@@ -75,7 +76,7 @@ class HTTPSender(object):
         logging.debug("send_file(%s) " % filename)
 
         result_name, result_ext = os.path.splitext(filename)
-        result_name += ".html"
+        result_filename = result_name + ".html"
 
         origin_file = open(filename)
         origin_data = origin_file.read()
@@ -90,8 +91,10 @@ class HTTPSender(object):
         response = conn.getresponse()
 
         if response.status == 200:
-            result_file = open(result_name, "w")
-            result_file.write(self.template.parse(response.read()))
+            title = os.path.split(result_name)[-1]
+            result_file = open(result_filename, "w")
+            result_file.write(self.template.parse(response.read(),
+                              title))
             result_file.close()
 
             return True
@@ -126,7 +129,6 @@ def parse_options():
                       help="port for the mediawiki", metavar="PORT")
     parser.add_option("-o", "--path", dest="path", default="out",
                       help="path to the given XML files", metavar="PATH")
-
 
     return parser.parse_args()
 

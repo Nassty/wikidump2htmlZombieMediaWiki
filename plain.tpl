@@ -3,8 +3,10 @@
 <html>
     <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+    <title>{{TITLE}}</title>
     </head>
     <body>
+    <h1>{{TITLE}}</h1>
        {{CONTENT}}
     </body>
 </html>
