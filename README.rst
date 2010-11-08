@@ -41,5 +41,5 @@ get this project::
 
 test it::
 
-        curl -X POST http://localhost/mediawiki/dumper.php -d '{{asd}}'
+        curl -X POST http://localhost/mediawiki/dumper.php --data-binary '{{asd}}'
 
