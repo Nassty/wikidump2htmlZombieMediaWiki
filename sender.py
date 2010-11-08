@@ -44,7 +44,7 @@ class HTTPSender(object):
     ..dary, LEGENDARY!
     """
 
-    def __init__(self, host, uri, path, port=80):
+    def __init__(self, host, uri, path, delete, port=80):
         """
         My *AWESOME* constructor
         """
@@ -53,6 +53,7 @@ class HTTPSender(object):
         self.path = path
         self.uri = uri
         self.port = int(port)
+        self.delete = delete
         #TODO: consider adding template switching
         self.template = SimpleTemplate("plain.tpl")  
 
@@ -98,6 +99,10 @@ class HTTPSender(object):
                               title))
             result_file.close()
             sys.stdout.write(".")
+
+            if self.delete:
+                os.unlink(filename)
+
             return True
         else:
             raise SenderException(response.reason)
@@ -114,16 +119,22 @@ class HTTPSender(object):
 
 
 def main():
+    """
+    here's the magic baby
+    """
     options, args = parse_options()
 
     HTTPSender(options.host, options.uri, options.path,
-               options.port).run()
+               options.delete, options.port).run()
+
     print
     print "-"*20
     print "DONE!"
 
 def parse_options():
-    """parse and return command line options"""
+    """
+    parse and return command line options
+    """
     parser = OptionParser()
     parser.add_option("-H", "--host", dest="host",
                       help="mediawiki host", metavar="HOST")
@@ -134,6 +145,9 @@ def parse_options():
     parser.add_option("-o", "--path", dest="path", default="out",
                       help="path to the given XML files", metavar="PATH")
 
+    parser.add_option("-D", "--delete", dest="delete", default=False,
+                      help="if true, removes the origin xml file",
+                      metavar="DELETE")
     return parser.parse_args()
 
 if __name__ == "__main__":
