@@ -14,6 +14,29 @@ class SenderException(Exception):
     pass
 
 
+class SimpleTemplate(object):
+    """
+    Simple Template Parser
+    """
+
+    def __init__(self, template):
+        """
+        This constructor is not that awesome but I'm proud of it
+        """
+
+        current_file = open(template)
+        self.html = current_file.read() 
+        current_file.close()
+
+    def parse(self, content):
+        """
+        Parse my content and give me my well formated HTML biatch
+        """
+
+        html = self.html 
+        html.replace("{{CONTENT}}", content)
+        return html
+
 class HTTPSender(object):
     """
     this class is legend... wait for it..
@@ -30,6 +53,8 @@ class HTTPSender(object):
         self.path = path
         self.uri = uri
         self.port = int(port)
+        #TODO: consider adding template switching
+        self.template = SimpleTemplate("plain.tpl")  
 
     def get_xml_files(self, path):
         """
@@ -68,7 +93,7 @@ class HTTPSender(object):
 
         if response.status == 200:
             result_file = open(result_name, "w")
-            result_file.write(response.read())
+            result_file.write(self.template.parse(response.read()))
             result_file.close()
 
             return True
