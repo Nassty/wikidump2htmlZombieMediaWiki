@@ -11,7 +11,11 @@ include("includes/parser/ParserOptions.php");
 include("includes/parser/Parser.php");
 
 $option = new ParserOptions();
-$title = new Title();
-$parser = new Parser();
-$text = ($parser->parse(file_get_contents('php://input'), $title, $option));
-print $text->mText;
+$option->setEditSection(false);
+$title = Title::newFromText("set me to something");
+
+$text = ($wgParser->parse(file_get_contents('php://input'), $title, $option));
+
+print $text->getText();
+
+?>
