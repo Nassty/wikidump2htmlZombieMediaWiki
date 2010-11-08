@@ -39,6 +39,11 @@ get this project::
         cd wikidump2htmlZombieMediaWiki/
         sudo cp dumper.php /var/lib/mediawiki/
 
+        svn co svn co http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/Cite
+        EXTDIR=$(pwd)
+        cd /var/lib/mediawiki/extensions
+        sudo ln -s $EXTDIR/Cite/
+
 test it::
 
         curl -X POST http://localhost/mediawiki/dumper.php --data-binary '{{asd}}'
