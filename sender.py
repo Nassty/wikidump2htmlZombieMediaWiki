@@ -78,7 +78,12 @@ class HTTPSender(object):
         logging.debug("send_file(%s) " % filename)
 
         result_name, result_ext = os.path.splitext(filename)
-        result_filename = result_name + ".html"
+        if len(result_name) > 3:
+            result_name = os.path.join(result_name[0], result_name[1],
+                    result_name[2], result_name + ".html")
+        else:
+            raise SenderException("DUNNO WHAT TO DO WITH %s" %
+                    result_name) 
 
         origin_file = open(filename)
         origin_data = origin_file.read()
